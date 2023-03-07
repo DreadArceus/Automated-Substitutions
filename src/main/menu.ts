@@ -1,10 +1,4 @@
-import {
-  app,
-  Menu,
-  shell,
-  BrowserWindow,
-  MenuItemConstructorOptions,
-} from 'electron';
+import { app, Menu, BrowserWindow, MenuItemConstructorOptions } from 'electron';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -54,17 +48,17 @@ export default class MenuBuilder {
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Electron',
+      label: 'AutoSubs',
       submenu: [
         {
-          label: 'About ElectronReact',
+          label: 'About AutoSubs',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide ElectronReact',
+          label: 'Hide AutoSubs',
           accelerator: 'Command+H',
           selector: 'hide:',
         },
@@ -151,37 +145,6 @@ export default class MenuBuilder {
         { label: 'Bring All to Front', selector: 'arrangeInFront:' },
       ],
     };
-    const subMenuHelp: MenuItemConstructorOptions = {
-      label: 'Help',
-      submenu: [
-        {
-          label: 'Learn More',
-          click() {
-            shell.openExternal('https://electronjs.org');
-          },
-        },
-        {
-          label: 'Documentation',
-          click() {
-            shell.openExternal(
-              'https://github.com/electron/electron/tree/main/docs#readme'
-            );
-          },
-        },
-        {
-          label: 'Community Discussions',
-          click() {
-            shell.openExternal('https://www.electronjs.org/community');
-          },
-        },
-        {
-          label: 'Search Issues',
-          click() {
-            shell.openExternal('https://github.com/electron/electron/issues');
-          },
-        },
-      ],
-    };
 
     const subMenuView =
       process.env.NODE_ENV === 'development' ||
@@ -189,7 +152,7 @@ export default class MenuBuilder {
         ? subMenuViewDev
         : subMenuViewProd;
 
-    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuHelp];
+    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow];
   }
 
   buildDefaultTemplate() {
@@ -251,37 +214,6 @@ export default class MenuBuilder {
                   },
                 },
               ],
-      },
-      {
-        label: 'Help',
-        submenu: [
-          {
-            label: 'Learn More',
-            click() {
-              shell.openExternal('https://electronjs.org');
-            },
-          },
-          {
-            label: 'Documentation',
-            click() {
-              shell.openExternal(
-                'https://github.com/electron/electron/tree/main/docs#readme'
-              );
-            },
-          },
-          {
-            label: 'Community Discussions',
-            click() {
-              shell.openExternal('https://www.electronjs.org/community');
-            },
-          },
-          {
-            label: 'Search Issues',
-            click() {
-              shell.openExternal('https://github.com/electron/electron/issues');
-            },
-          },
-        ],
       },
     ];
 

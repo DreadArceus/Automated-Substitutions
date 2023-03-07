@@ -1,50 +1,36 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
-import './App.css';
+import { MemoryRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import './App.scss';
+import { Add } from './views/add';
 
-function Hello() {
+const Home: React.FC = () => {
   return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
+    <div className="home">
+      <h1>Welcome</h1>
+      <div>
+        <Link to={'get-subs'}>Get Substitutions</Link>
       </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
+      <div>
+        <Link to={'add'}>Add New Teacher/Class/Subject</Link>
+        <Link to={'delete'}>Delete Teacher/Class/Subject</Link>
+      </div>
+      <div>
+        <Link to={'tt/add'}>Add Timetable Entry</Link>
+        <Link to={'tt/delete'}>Delete Timetable Entry</Link>
+        <Link to={'tt/validate'}>Validate Timetable</Link>
       </div>
     </div>
   );
-}
+};
 
-export default function App() {
+const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hello />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/add" element={<Add />} />
       </Routes>
     </Router>
   );
-}
+};
+
+export default App;

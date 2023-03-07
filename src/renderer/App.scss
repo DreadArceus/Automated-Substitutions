@@ -1,0 +1,40 @@
+body {
+  position: relative;
+  color: white;
+  height: 100vh;
+  background: black;
+  font-family: sans-serif;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  a {
+    width: 230px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background-color: #40513b;
+    padding: 10px;
+    border: 1px white solid;
+
+    &:hover {
+      background-color: #609966;
+      transform: scale(1.05);
+    }
+  }
+
+  & > div {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px white dashed;
+    margin: 10px;
+  }
+}
