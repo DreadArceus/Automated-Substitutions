@@ -14,6 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { Manager } from './manager';
 
 class AppUpdater {
   constructor() {
@@ -22,6 +23,8 @@ class AppUpdater {
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
+
+const manager = new Manager();
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -124,6 +127,10 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+app.on('will-quit', () => {
+  manager.updateData();
 });
 
 app
