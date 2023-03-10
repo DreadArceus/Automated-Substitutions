@@ -1,6 +1,7 @@
 import { MemoryRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.scss';
-import { Add } from './views/add';
+import { Header } from './components/Header';
+import { Add } from './views/Add';
 
 const Home: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const Home: React.FC = () => {
 const App: React.FC = () => {
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/add" element={<Add />} />

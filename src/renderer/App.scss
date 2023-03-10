@@ -2,12 +2,25 @@ body {
   position: relative;
   color: white;
   height: 100vh;
+  margin: 0px;
   background: black;
   font-family: sans-serif;
   overflow-y: hidden;
+}
+
+#root {
+  width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  width: 97%;
+  margin-top: 20px;
+  margin-bottom: 90px;
 }
 
 .home {
@@ -36,5 +49,55 @@ body {
     padding: 15px;
     border: 1px white dashed;
     margin: 10px;
+  }
+}
+
+.add {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  justify-content: space-around;
+  align-items: center;
+  width: 700px;
+
+  h2,
+  h4 {
+    margin: 0px;
+  }
+
+  input {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    font-size: 20px;
+    width: 90%;
+
+    &:focus {
+      border-color: red;
+      outline: none;
+    }
+  }
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+
+    & > button {
+      font-size: 18px;
+      padding: 10px;
+      border-radius: 20px;
+      border: 2px solid black;
+      outline: none;
+
+      &:hover {
+        cursor: pointer;
+      }
+      &:focus {
+        border-color: red;
+      }
+    }
   }
 }
