@@ -7,8 +7,9 @@ export const Add: React.FC<AddProps> = ({}) => {
   const [name, setName] = useState('');
   const [last, setLast] = useState('');
 
-  const handleClick = (kind: string) => {
-    window.electron.ipcRenderer.sendMessage(('add' + kind) as Channels, [name]);
+  const handleAdd = (kind: string) => {
+    if (name === '') return;
+    window.electron.ipcRenderer.send(('add' + kind) as Channels, [name]);
     setName('');
     setLast(kind);
   };
@@ -23,13 +24,13 @@ export const Add: React.FC<AddProps> = ({}) => {
           setName(e.target.value);
         }}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' && last !== '') handleClick(last);
+          if (e.key === 'Enter' && last !== '') handleAdd(last);
         }}
       />
       <div>
-        <button onClick={() => handleClick('T')}>Add Teacher</button>
-        <button onClick={() => handleClick('C')}>Add Class</button>
-        <button onClick={() => handleClick('S')}>Add Subject</button>
+        <button onClick={() => handleAdd('T')}>Add Teacher</button>
+        <button onClick={() => handleAdd('C')}>Add Class</button>
+        <button onClick={() => handleAdd('S')}>Add Subject</button>
       </div>
     </div>
   );
