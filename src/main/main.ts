@@ -28,10 +28,14 @@ const manager = new Manager();
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+ipcMain.on('addT', async (event, arg) => {
+  manager.addTeacher(arg[0]);
+});
+ipcMain.on('addC', async (event, arg) => {
+  manager.addClass(arg[0]);
+});
+ipcMain.on('addS', async (event, arg) => {
+  manager.addSubject(arg[0]);
 });
 
 if (process.env.NODE_ENV === 'production') {
