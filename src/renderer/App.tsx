@@ -2,6 +2,7 @@ import { MemoryRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.scss';
 import { Header } from './components/Header';
 import { Add } from './views/Add';
+import { Delete } from './views/Delete';
 
 const Home: React.FC = () => {
   return (
@@ -30,6 +31,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/add" element={<Add />} />
+        <Route path="/delete" element={<Delete />} />
       </Routes>
     </Router>
   );

@@ -28,6 +28,7 @@ export class Manager {
     readFile(dataPath, 'utf-8', (err, rawData) => {
       if (!err) {
         const data: SaveData = JSON.parse(rawData);
+        console.log(data);
 
         this.teachers = data.teachers;
         this.classes = data.classes;
@@ -44,6 +45,26 @@ export class Manager {
   }
   addSubject(name: string): void {
     this.subjects.push({ name });
+  }
+
+  getTeachers(): string[] {
+    return this.teachers.map((t) => t.name);
+  }
+  getClasses(): string[] {
+    return this.classes.map((c) => c.name);
+  }
+  getSubjects(): string[] {
+    return this.subjects.map((s) => s.name);
+  }
+
+  deleteTeacher(toDelete: string): void {
+    this.teachers = this.teachers.filter((t) => t.name !== toDelete);
+  }
+  deleteClass(toDelete: string): void {
+    this.classes = this.classes.filter((c) => c.name !== toDelete);
+  }
+  deleteSubject(toDelete: string): void {
+    this.subjects = this.subjects.filter((s) => s.name !== toDelete);
   }
 
   updateData(): void {

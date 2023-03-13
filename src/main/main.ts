@@ -38,6 +38,26 @@ ipcMain.on('addS', async (event, arg) => {
   manager.addSubject(arg[0]);
 });
 
+ipcMain.handle('getT', () => {
+  return manager.getTeachers();
+});
+ipcMain.handle('getC', () => {
+  return manager.getClasses();
+});
+ipcMain.handle('getS', () => {
+  return manager.getSubjects();
+});
+
+ipcMain.on('deleteT', async (_, arg) => {
+  manager.deleteTeacher(arg[0]);
+});
+ipcMain.on('deleteC', async (_, arg) => {
+  manager.deleteClass(arg[0]);
+});
+ipcMain.on('deleteS', async (_, arg) => {
+  manager.deleteSubject(arg[0]);
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
