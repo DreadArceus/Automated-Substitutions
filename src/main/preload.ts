@@ -13,7 +13,9 @@ export type Channels =
   | 'deleteC'
   | 'deleteS'
   | 'getConfig'
-  | 'updateConfig';
+  | 'updateConfig'
+  | 'getTCSEntries'
+  | 'updateTimetable';
 
 const electronHandler = {
   ipcRenderer: {

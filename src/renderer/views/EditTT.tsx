@@ -6,11 +6,11 @@ const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export const EditTT: React.FC<EditTTProps> = ({}) => {
   const [teachers, setTeachers] = useState<string[]>([]);
-  const [selectedT, setSelectedT] = useState<number>(-1);
+  const [selectedT, setSelectedT] = useState('');
   const [classes, setClasses] = useState<string[]>([]);
-  const [selectedC, setSelectedC] = useState<number>(-1);
+  const [selectedC, setSelectedC] = useState('');
   const [subjects, setSubjects] = useState<string[]>([]);
-  const [selectedS, setSelectedS] = useState<number>(-1);
+  const [selectedS, setSelectedS] = useState('');
   const [matrix, setMatrix] = useState<number[][] | undefined>();
 
   useEffect(() => {
@@ -26,13 +26,12 @@ export const EditTT: React.FC<EditTTProps> = ({}) => {
   }, []);
 
   const handleGet = () => {
-    const temp = [];
-    for (var j = 0; j < 6; j++) {
-      const ar = [];
-      for (var i = 0; i < 9; i++) ar.push(Math.floor(Math.random() * 2));
-      temp.push(ar);
-    }
-    setMatrix(temp);
+    if (selectedT === '' || selectedC === '' || selectedS === '') return;
+    window.electron.ipcRenderer
+      .invoke('getTCSEntries', [selectedT, selectedC, selectedS])
+      .then((res) => {
+        setMatrix(res);
+      });
   };
 
   const handleToggle = (day: number, period: number) => {
@@ -49,7 +48,14 @@ export const EditTT: React.FC<EditTTProps> = ({}) => {
     ]);
   };
 
-  const handleUpdate = () => {};
+  const handleUpdate = () => {
+    window.electron.ipcRenderer.send('updateTimetable', [
+      selectedT,
+      selectedC,
+      selectedS,
+      matrix,
+    ]);
+  };
 
   return (
     <div className="edit-tt">
@@ -57,35 +63,44 @@ export const EditTT: React.FC<EditTTProps> = ({}) => {
         <div id="left-menu">
           <select
             value={selectedT}
-            onChange={(e) => setSelectedT(parseInt(e.target.value))}
+            onChange={(e) => {
+              setSelectedT(e.target.value);
+              setMatrix(undefined);
+            }}
           >
-            <option value="-1" hidden>
+            <option value="" hidden>
               Choose Teacher
             </option>
-            {teachers.map((val, id) => (
-              <option value={id}>{val}</option>
+            {teachers.map((val) => (
+              <option>{val}</option>
             ))}
           </select>
           <select
             value={selectedC}
-            onChange={(e) => setSelectedC(parseInt(e.target.value))}
+            onChange={(e) => {
+              setSelectedC(e.target.value);
+              setMatrix(undefined);
+            }}
           >
-            <option value="-1" hidden>
+            <option value="" hidden>
               Choose Class
             </option>
-            {classes.map((val, id) => (
-              <option value={id}>{val}</option>
+            {classes.map((val) => (
+              <option>{val}</option>
             ))}
           </select>
           <select
             value={selectedS}
-            onChange={(e) => setSelectedS(parseInt(e.target.value))}
+            onChange={(e) => {
+              setSelectedS(e.target.value);
+              setMatrix(undefined);
+            }}
           >
-            <option value="-1" hidden>
+            <option value="" hidden>
               Choose Subject
             </option>
-            {subjects.map((val, id) => (
-              <option value={id}>{val}</option>
+            {subjects.map((val) => (
+              <option>{val}</option>
             ))}
           </select>
           <button onClick={handleGet}>Get</button>

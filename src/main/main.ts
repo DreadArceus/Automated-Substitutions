@@ -65,6 +65,13 @@ ipcMain.on('updateConfig', async (_, arg) => {
   manager.updateConfig(arg[0]);
 });
 
+ipcMain.handle('getTCSEntries', async (_, arg) => {
+  return manager.getTCSEntries(arg[0], arg[1], arg[2]);
+});
+ipcMain.on('updateTimetable', async (_, arg) => {
+  manager.updateTimetable(arg[0], arg[1], arg[2], arg[3]);
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
