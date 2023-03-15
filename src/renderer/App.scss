@@ -1,3 +1,9 @@
+@mixin center-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @mixin focus-border($color: white) {
   border: 2px solid $color;
   outline: none;
@@ -17,6 +23,16 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+@mixin standard-select($w: 150px) {
+  font-size: 17px;
+  width: $w;
+  background-color: black;
+  color: white;
+  padding: 6px;
+
+  @include focus-border();
 }
 
 @mixin view-base($h: 0) {
@@ -129,13 +145,7 @@ body {
   }
 
   select {
-    font-size: 17px;
-    width: 150px;
-    background-color: black;
-    color: white;
-    padding: 6px;
-
-    @include focus-border();
+    @include standard-select();
   }
 
   #del {
@@ -171,6 +181,64 @@ body {
     button {
       @include standard-btn();
       width: 120px;
+    }
+  }
+}
+
+.edit-tt {
+  @include view-base(500px);
+  width: 95%;
+  margin-top: -40px;
+
+  & > div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  button {
+    @include standard-btn();
+  }
+
+  #left-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    select {
+      @include standard-select(170px);
+      margin-bottom: 30px;
+    }
+  }
+
+  #edit-box > div {
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-evenly;
+
+    button {
+      width: 200px;
+    }
+
+    h3,
+    h4 {
+      @include center-text();
+      margin: 0px;
+    }
+
+    h3 {
+      width: 67px;
+    }
+    h4 {
+      width: 50px;
+      border-right: 2px white solid;
+    }
+
+    & > div {
+      width: 65px;
+      height: 65px;
+      border: 2px white solid;
+      border-left: 0px;
     }
   }
 }
