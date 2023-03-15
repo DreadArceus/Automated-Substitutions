@@ -1,6 +1,10 @@
 import { readFile, writeFile } from 'fs';
 import { dataPath } from './util';
 
+type Config = {
+  periods: number;
+};
+
 type Teacher = {
   name: string;
 };
@@ -14,12 +18,14 @@ type Subject = {
 };
 
 type SaveData = {
+  config: Config;
   teachers: Teacher[];
   classes: Class[];
   subjects: Subject[];
 };
 
 export class Manager {
+  config: Config = { periods: 0 };
   teachers: Teacher[] = [];
   classes: Class[] = [];
   subjects: Subject[] = [];
@@ -28,8 +34,8 @@ export class Manager {
     readFile(dataPath, 'utf-8', (err, rawData) => {
       if (!err) {
         const data: SaveData = JSON.parse(rawData);
-        console.log(data);
 
+        this.config = data.config;
         this.teachers = data.teachers;
         this.classes = data.classes;
         this.subjects = data.subjects;
@@ -67,8 +73,16 @@ export class Manager {
     this.subjects = this.subjects.filter((s) => s.name !== toDelete);
   }
 
+  getConfig(): Config {
+    return this.config;
+  }
+  updateConfig(neoConfig: Config): void {
+    this.config = neoConfig;
+  }
+
   updateData(): void {
     const neoData: SaveData = {
+      config: this.config,
       teachers: this.teachers,
       classes: this.classes,
       subjects: this.subjects,

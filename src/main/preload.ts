@@ -11,7 +11,9 @@ export type Channels =
   | 'getS'
   | 'deleteT'
   | 'deleteC'
-  | 'deleteS';
+  | 'deleteS'
+  | 'getConfig'
+  | 'updateConfig';
 
 const electronHandler = {
   ipcRenderer: {

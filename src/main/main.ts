@@ -58,6 +58,13 @@ ipcMain.on('deleteS', async (_, arg) => {
   manager.deleteSubject(arg[0]);
 });
 
+ipcMain.handle('getConfig', () => {
+  return manager.getConfig();
+});
+ipcMain.on('updateConfig', async (_, arg) => {
+  manager.updateConfig(arg[0]);
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
