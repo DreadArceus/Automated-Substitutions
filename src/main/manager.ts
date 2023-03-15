@@ -122,6 +122,64 @@ export class Manager {
     });
   }
 
+  validateTimetable(): string[] {
+    const issues: string[] = [];
+
+    const trackerT: {
+      [key: string]: { day: number; period: number; c: string }[];
+    } = {};
+    const trackerC: {
+      [key: string]: { day: number; period: number; t: string }[];
+    } = {};
+    for (const { teacher: t, class: c, day, period } of this.timetable) {
+      trackerT[t] ??= [];
+      trackerT[t].push({ day, period, c });
+      trackerC[c] ??= [];
+      trackerC[c].push({ day, period, t });
+    }
+
+    for (let i = 0; i < 6; i++)
+      for (let j = 0; j < this.config.periods; j++) {
+        for (const { name } of this.teachers) {
+          if (!trackerT[name]) continue;
+
+          const tmp = trackerT[name].filter(
+            (e) => e.day === i && e.period === j
+          );
+
+          if (tmp.length > 1) {
+            issues.push(
+              `Clash! ${name} has multiple classes on day ${i} in period ${j}: ${tmp.map(
+                (e) => e.c
+              )}`
+            );
+          }
+        }
+
+        for (const { name } of this.classes) {
+          if (!trackerC[name]) continue;
+
+          const tmp = trackerC[name].filter(
+            (e) => e.day === i && e.period === j
+          );
+
+          if (tmp.length > 1)
+            issues.push(
+              `Clash! ${name} has multiple teachers on day ${i} in period ${j}: ${tmp.map(
+                (e) => e.t
+              )}`
+            );
+
+          if (tmp.length === 0)
+            issues.push(
+              `Warning! Class ${name} is unassigned on day ${i} in period ${j}`
+            );
+        }
+      }
+
+    return issues;
+  }
+
   updateData(): void {
     const neoData: SaveData = {
       config: this.config,

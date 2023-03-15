@@ -20,7 +20,18 @@ const Home: React.FC = () => {
       <div>
         <Link to={'tt/config'}>Configure Timetable</Link>
         <Link to={'tt/edit'}>Edit Timetable</Link>
-        <Link to={'tt/validate'}>Validate Timetable</Link>
+        <Link
+          to={'tt/validate'}
+          onClick={(e) => {
+            e.preventDefault();
+
+            window.electron.ipcRenderer
+              .invoke('validateTimetable')
+              .then((res) => alert(res.length ? res.join('\n') : 'No issues!'));
+          }}
+        >
+          Validate Timetable
+        </Link>
       </div>
     </div>
   );
