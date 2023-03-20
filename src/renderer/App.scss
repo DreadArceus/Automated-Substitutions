@@ -1,3 +1,15 @@
+@mixin scroll-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  background-color: rgb(52, 49, 49);
+  padding: 10px;
+  overflow-y: scroll;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
 @mixin center-text {
   display: flex;
   justify-content: center;
@@ -254,20 +266,11 @@ body {
   }
 
   & > div {
+    @include scroll-container();
+
     margin-top: 30px;
     max-height: 400px;
     width: 80%;
-    padding: 10px;
-    border: 2px white solid;
-    border-radius: 10px;
-    background-color: rgb(52, 49, 49);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-
-    overflow-y: scroll;
     font-size: 17px;
 
     & > div {
@@ -276,6 +279,45 @@ body {
 
       p {
         margin-right: 10px;
+      }
+    }
+  }
+}
+
+.subs {
+  @include view-base();
+  margin-top: -70px;
+
+  select {
+    @include standard-select();
+    margin-bottom: 20px;
+  }
+  button {
+    @include standard-btn();
+    margin-top: 20px;
+  }
+
+  & > div {
+    @include scroll-container();
+    height: 330px;
+    width: 300px;
+
+    & > div {
+      display: flex;
+      width: 220px;
+      justify-content: space-between;
+      padding: 5px;
+      align-content: center;
+
+      & > div {
+        width: 20px;
+        background-color: white;
+        color: black;
+        border: 2px solid black;
+        border-radius: 100px;
+
+        cursor: pointer;
+        @include center-text();
       }
     }
   }

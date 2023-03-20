@@ -5,6 +5,7 @@ import { Add } from './views/Add';
 import { Config } from './views/Config';
 import { Delete } from './views/Delete';
 import { EditTT } from './views/EditTT';
+import { Subs } from './views/Subs';
 import { Validate } from './views/Validate';
 
 const Home: React.FC = () => {
@@ -33,6 +34,7 @@ const App: React.FC = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="get-subs" element={<Subs />} />
         <Route path="/add" element={<Add />} />
         <Route path="/delete" element={<Delete />} />
         <Route path="/tt/config" element={<Config />} />
