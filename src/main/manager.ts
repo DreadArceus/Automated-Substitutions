@@ -147,13 +147,12 @@ export class Manager {
             (e) => e.day === i && e.period === j
           );
 
-          if (tmp.length > 1) {
+          if (tmp.length > 1)
             issues.push(
-              `Clash! ${name} has multiple classes on day ${i} in period ${j}: ${tmp.map(
-                (e) => e.c
-              )}`
+              `Clash! ${name} has multiple classes on day ${i} in period ${j}: ${tmp
+                .map((e) => e.c)
+                .join(', ')}`
             );
-          }
         }
 
         for (const { name } of this.classes) {
@@ -165,9 +164,9 @@ export class Manager {
 
           if (tmp.length > 1)
             issues.push(
-              `Clash! ${name} has multiple teachers on day ${i} in period ${j}: ${tmp.map(
-                (e) => e.t
-              )}`
+              `Clash! ${name} has multiple teachers on day ${i} in period ${j}: ${tmp
+                .map((e) => e.t)
+                .join(', ')}`
             );
 
           if (tmp.length === 0)

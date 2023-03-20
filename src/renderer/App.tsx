@@ -5,6 +5,7 @@ import { Add } from './views/Add';
 import { Config } from './views/Config';
 import { Delete } from './views/Delete';
 import { EditTT } from './views/EditTT';
+import { Validate } from './views/Validate';
 
 const Home: React.FC = () => {
   return (
@@ -20,18 +21,7 @@ const Home: React.FC = () => {
       <div>
         <Link to={'tt/config'}>Configure Timetable</Link>
         <Link to={'tt/edit'}>Edit Timetable</Link>
-        <Link
-          to={'tt/validate'}
-          onClick={(e) => {
-            e.preventDefault();
-
-            window.electron.ipcRenderer
-              .invoke('validateTimetable')
-              .then((res) => alert(res.length ? res.join('\n') : 'No issues!'));
-          }}
-        >
-          Validate Timetable
-        </Link>
+        <Link to={'tt/validate'}>Validate Timetable</Link>
       </div>
     </div>
   );
@@ -47,6 +37,7 @@ const App: React.FC = () => {
         <Route path="/delete" element={<Delete />} />
         <Route path="/tt/config" element={<Config />} />
         <Route path="/tt/edit" element={<EditTT />} />
+        <Route path="/tt/validate" element={<Validate />} />
       </Routes>
     </Router>
   );

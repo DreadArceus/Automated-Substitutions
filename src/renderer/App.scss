@@ -242,3 +242,41 @@ body {
     }
   }
 }
+
+.validate {
+  @include view-base();
+  margin-top: -40px;
+  width: 100%;
+
+  h1,
+  h2 {
+    margin: 0px;
+  }
+
+  & > div {
+    margin-top: 30px;
+    max-height: 400px;
+    width: 80%;
+    padding: 10px;
+    border: 2px white solid;
+    border-radius: 10px;
+    background-color: rgb(52, 49, 49);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+
+    overflow-y: scroll;
+    font-size: 17px;
+
+    & > div {
+      display: flex;
+      align-items: center;
+
+      p {
+        margin-right: 10px;
+      }
+    }
+  }
+}
