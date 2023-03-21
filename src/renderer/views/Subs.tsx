@@ -16,7 +16,10 @@ export const Subs: React.FC<SubsProps> = ({}) => {
   const handleGet = () => {
     window.electron.ipcRenderer
       .invoke('getSubs', [absentees, excluded, day])
-      .then((res) => console.log(res));
+      .then((res) => {
+        if (res) alert('Finished successfully, file saved to your desktop!');
+        else alert('Some substitutions failed, file saved to your desktop!');
+      });
   };
 
   return (

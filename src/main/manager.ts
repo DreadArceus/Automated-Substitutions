@@ -1,5 +1,8 @@
 import { readFile, writeFile } from 'fs';
 import { dataPath } from './util';
+import { Workbook } from 'exceljs';
+import { app } from 'electron';
+import path from 'path';
 
 type Config = {
   periods: number;
@@ -211,7 +214,7 @@ export class Manager {
     absent: string[],
     exclude: string[],
     curDay: number
-  ): { subs: { [key: string]: string[] }; fails: string[] } {
+  ): boolean {
     const helperClassBlock: { [key: string]: number } = {};
     for (let c of this.classes) helperClassBlock[c.name] = c.block;
 
@@ -244,7 +247,7 @@ export class Manager {
         remaining[teacherMap[e.teacher]].free[e.period] = false;
 
     const subs: { [key: string]: string[] } = {};
-    const fails: string[] = [];
+    const fails: string[][] = [];
     for (let e of todayTable) {
       if (!absent.includes(e.teacher)) continue;
 
@@ -254,9 +257,7 @@ export class Manager {
       );
 
       if (choices.length === 0) {
-        fails.push(
-          `Unable to replace ${e.teacher} teaching ${e.subject} in class ${e.class} during ${e.period} period`
-        );
+        fails.push([e.teacher, e.class, `${e.period}`, e.subject]);
         continue;
       }
 
@@ -276,7 +277,32 @@ export class Manager {
       subs[remaining[id].name][e.period] = e.class;
     }
 
-    return { subs, fails };
+    const wb = new Workbook();
+    const sheet = wb.addWorksheet('Subs');
+
+    const head = [''];
+    for (let p = 0; p < this.config.periods; p++) head.push(`${p}`);
+    sheet.addRow(head);
+    for (let [k, r] of Object.entries(subs)) {
+      sheet.addRow([k, ...r]);
+    }
+
+    if (fails.length) {
+      sheet.addRow(['']);
+      sheet.addRow(['Failed to Substitute']);
+      sheet.addRow(['Teacher', 'Class', 'Period', 'Subject']);
+      for (let f of fails) sheet.addRow(f);
+    }
+
+    const dt = new Date();
+    wb.xlsx.writeFile(
+      path.resolve(
+        app.getPath('desktop'),
+        `subs-${dt.getDate()}-${dt.getMonth()}-${dt.getFullYear()}.xlsx`
+      )
+    );
+
+    return fails.length === 0;
   }
 
   updateData(): void {

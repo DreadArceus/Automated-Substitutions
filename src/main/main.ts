@@ -75,6 +75,7 @@ ipcMain.on('updateTimetable', async (_, arg) => {
 ipcMain.handle('validateTimetable', () => {
   return manager.validateTimetable();
 });
+
 ipcMain.handle('getSubs', (_, arg) => {
   return manager.getSubstitutions(arg[0], arg[1], arg[2]);
 });
