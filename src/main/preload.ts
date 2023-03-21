@@ -16,7 +16,8 @@ export type Channels =
   | 'updateConfig'
   | 'getTCSEntries'
   | 'updateTimetable'
-  | 'validateTimetable';
+  | 'validateTimetable'
+  | 'getSubs';
 
 const electronHandler = {
   ipcRenderer: {

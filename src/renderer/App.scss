@@ -286,38 +286,68 @@ body {
 
 .subs {
   @include view-base();
-  margin-top: -70px;
+  margin-top: -90px;
+  width: 100%;
 
   select {
     @include standard-select();
-    margin-bottom: 20px;
   }
   button {
     @include standard-btn();
-    margin-top: 20px;
   }
 
-  & > div {
-    @include scroll-container();
-    height: 330px;
-    width: 300px;
+  #sub-end {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    width: 500px;
+
+    button {
+      margin-left: 10px;
+    }
+  }
+
+  #sub-teachers {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+    select {
+      width: 250px;
+    }
 
     & > div {
       display: flex;
-      width: 220px;
+      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
-      padding: 5px;
-      align-content: center;
+      height: 420px;
 
       & > div {
-        width: 20px;
-        background-color: white;
-        color: black;
-        border: 2px solid black;
-        border-radius: 100px;
+        @include scroll-container();
+        height: 330px;
+        width: 300px;
+        display: flex;
+        flex-direction: column;
 
-        cursor: pointer;
-        @include center-text();
+        & > div {
+          display: flex;
+          width: 220px;
+          justify-content: space-between;
+          padding: 5px;
+          align-content: center;
+
+          & > div {
+            width: 20px;
+            background-color: white;
+            color: black;
+            border: 2px solid black;
+            border-radius: 100px;
+
+            cursor: pointer;
+            @include center-text();
+          }
+        }
       }
     }
   }

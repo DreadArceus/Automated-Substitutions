@@ -75,6 +75,9 @@ ipcMain.on('updateTimetable', async (_, arg) => {
 ipcMain.handle('validateTimetable', () => {
   return manager.validateTimetable();
 });
+ipcMain.handle('getSubs', (_, arg) => {
+  return manager.getSubstitutions(arg[0], arg[1], arg[2]);
+});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');

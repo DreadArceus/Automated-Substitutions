@@ -7,10 +7,13 @@ type Config = {
 
 type Teacher = {
   name: string;
+  subjects: { [key: string]: number };
+  classes: { [key: string]: number };
 };
 
 type Class = {
   name: string;
+  block: number;
 };
 
 type Subject = {
@@ -34,7 +37,7 @@ type SaveData = {
 };
 
 export class Manager {
-  config: Config = { periods: 0 };
+  config: Config = { periods: 9 };
   teachers: Teacher[] = [];
   classes: Class[] = [];
   subjects: Subject[] = [];
@@ -55,10 +58,17 @@ export class Manager {
   }
 
   addTeacher(name: string): void {
-    this.teachers.push({ name });
+    this.teachers.push({ name, subjects: {}, classes: {} });
   }
   addClass(name: string): void {
-    this.classes.push({ name });
+    let num = parseInt(name),
+      block: number;
+
+    if (Number.isNaN(num) || num <= 2) block = 0;
+    else if (num < 9) block = 1;
+    else block = 2;
+
+    this.classes.push({ name, block });
   }
   addSubject(name: string): void {
     this.subjects.push({ name });
@@ -104,12 +114,23 @@ export class Manager {
     return matrix;
   }
   updateTimetable(t: string, c: string, s: string, matrix: number[][]): void {
+    let len = this.timetable.length;
     this.timetable = this.timetable.filter(
       (e) => !(e.teacher === t && e.class === c && e.subject === s)
     );
 
+    let i = this.teachers.find((val) => val.name == t);
+    if (!i) return;
+
+    if (len > this.timetable.length) {
+      i.classes[c] != 1 ? i.classes[c]-- : delete i.classes[c];
+      i.subjects[s] != 1 ? i.subjects[s]-- : delete i.subjects[s];
+    }
+
+    let cnt = 0;
     matrix.map((dayVector, day) => {
       dayVector.map((active, period) => {
+        cnt += active;
         if (active)
           this.timetable.push({
             teacher: t,
@@ -120,6 +141,13 @@ export class Manager {
           });
       });
     });
+
+    if (cnt) {
+      i.subjects[s] ??= 0;
+      i.subjects[s]++;
+      i.classes[c] ??= 0;
+      i.classes[c]++;
+    }
   }
 
   validateTimetable(): string[] {
@@ -177,6 +205,78 @@ export class Manager {
       }
 
     return issues;
+  }
+
+  getSubstitutions(
+    absent: string[],
+    exclude: string[],
+    curDay: number
+  ): { subs: { [key: string]: string[] }; fails: string[] } {
+    const helperClassBlock: { [key: string]: number } = {};
+    for (let c of this.classes) helperClassBlock[c.name] = c.block;
+
+    const remaining: (Teacher & {
+      block: number;
+      free: boolean[];
+      used: boolean;
+    })[] = [];
+    const teacherMap: { [key: string]: number } = {};
+    this.teachers.map((t) => {
+      if (!absent.includes(t.name) && !exclude.includes(t.name)) {
+        let b = -1;
+        Object.keys(t.classes).map(
+          (c) => (b = Math.max(b, helperClassBlock[c]))
+        );
+        teacherMap[t.name] = remaining.length;
+        remaining.push({
+          ...t,
+          block: b,
+          free: Array(this.config.periods).fill(true),
+          used: false,
+        });
+      }
+    });
+
+    const todayTable = this.timetable.filter((e) => e.day == curDay);
+
+    for (let e of todayTable)
+      if (!absent.includes(e.teacher) && !exclude.includes(e.teacher))
+        remaining[teacherMap[e.teacher]].free[e.period] = false;
+
+    const subs: { [key: string]: string[] } = {};
+    const fails: string[] = [];
+    for (let e of todayTable) {
+      if (!absent.includes(e.teacher)) continue;
+
+      const choices = remaining.filter(
+        (t) =>
+          !t.used && t.free[e.period] && t.block === helperClassBlock[e.class]
+      );
+
+      if (choices.length === 0) {
+        fails.push(
+          `Unable to replace ${e.teacher} teaching ${e.subject} in class ${e.class} during ${e.period} period`
+        );
+        continue;
+      }
+
+      let choices2 = choices.filter((t) => e.subject in t.subjects);
+      if (choices2.length === 0) {
+        choices2 = choices.filter((t) => e.class in t.classes);
+      }
+      if (choices2.length === 0) {
+        choices2 = choices;
+      }
+
+      const final = Math.floor(Math.random() * choices2.length);
+      const id = teacherMap[choices2[final].name];
+
+      remaining[id].used = true;
+      subs[remaining[id].name] ??= Array(this.config.periods).fill('');
+      subs[remaining[id].name][e.period] = e.class;
+    }
+
+    return { subs, fails };
   }
 
   updateData(): void {

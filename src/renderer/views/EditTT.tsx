@@ -1,8 +1,7 @@
+import { dayNames } from '../util';
 import React, { useEffect, useState } from 'react';
 
 interface EditTTProps {}
-
-const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export const EditTT: React.FC<EditTTProps> = ({}) => {
   const [teachers, setTeachers] = useState<string[]>([]);
